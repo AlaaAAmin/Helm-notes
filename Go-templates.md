@@ -9,3 +9,15 @@
 
 ### Generating yaml files from a chart to be directly installed on our kubernetes cluster
 1. `helm template <chart-directory-path> > template-name.yaml` the output is a file that can be deployed using kubectl
+
+### Functions
+There are a list of functions that you can use in the templates and all is listed here https://helm.sh/docs/chart_template_guide/function_list/
+
+- function syntax is {{ function-name args }}
+  
+One of the most important functions is the default
+- {{ default "default-value" user-defined-value }}
+
+### Pipelines
+Pipelines are used to chain functions together just like linux pipelines
+- {{ value | function | another-function }}
