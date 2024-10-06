@@ -21,3 +21,28 @@ One of the most important functions is the default
 ### Pipelines
 Pipelines are used to chain functions together just like linux pipelines
 - {{ value | function | another-function }}
+
+### Conditional statement
+- `{{ if eq value-of-variable specific-value }}true-expression{{ else }}false-expression{{ end }}`
+This evaluates to if a value-of-variable equals a specific-value then the true-expression will be the right one, else false-expression
+
+### Named or sub templates
+Is a block of Yaml that you want to use multiple times
+1. create a file in the template folder with the following convention _whatever-name.tpl or .yaml it is not important really  
+The underscore tells Helm that this is not a regular Yaml file
+2. The template syntax is as follows  
+`
+{{ define "template-name" }}
+vaild Yaml block
+{{ end }}
+`
+3. To embed a template into your code you can use template or include  
+- Template syntax is `{{ template "template-name" tree-start }}` tree start can affect how you specify the variables coming from the values.yaml  
+for example `{{ template "template-name" .Values }}` will make you no longer need to put .Values infront of every variable.  
+if it is just a dot like this `{{ template "template-name" . }}` then this will have no effect on the values
+> **Two problems that we need to solve are** that the above code will leave an empty line after the go substitution happen, this happens everytime we have a substitution code having it is own line of code.  
+> **The solution** is to use - (minus sign) directive `{{- template "template-name" .Values }}`  
+  
+> **The other problem is** that template will have the indentation of the yaml block starting from the start of the line and that will break the code.  
+> **The solution** is to use the function **indent** in a pipeline but sadly template doesn't support that, and that's why **include** is needed  
+- Include syntax will be `{{ include "template-name" tree-start | indent number-of-spaces }}`
